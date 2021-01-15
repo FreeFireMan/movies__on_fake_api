@@ -1,7 +1,8 @@
 import './Home.css'
+import {FilmList} from "../../components";
 
 export function Home () {
   return (
-      <div>hello from home</div>
+      <FilmList/>
   );
 }
