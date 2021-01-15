@@ -1,4 +1,4 @@
-import styles from 'BaseLayout.module.css'
+import styles from './BaseLayout.module.css'
 
 export const BaseLayout = ({children}) => {
   return (
