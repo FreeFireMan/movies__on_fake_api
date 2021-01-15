@@ -1,10 +1,10 @@
 
 
 export const FilmItem = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+  return (
+      <div>
+
+      </div>
+  );
 }
 
