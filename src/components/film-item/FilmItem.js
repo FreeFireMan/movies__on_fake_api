@@ -46,7 +46,7 @@ export const FilmItem = (props) => {
           <h3>{original_title}</h3>
 
           <h5>{movieGenresList.map(({name, id}, i) => (
-              <span key={id}>{name} {i < movieGenresList.length-1 && '-'} </span>
+              <span key={id}>{name} {i < movieGenresList.length - 1 && '-'} </span>
           ))}</h5>
 
           <span><b>Rating:</b> {vote_average} (total votes: {vote_count})</span>
