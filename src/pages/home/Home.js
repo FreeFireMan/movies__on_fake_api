@@ -8,6 +8,7 @@ export function Home() {
   const [movieList, setMovieList] = useState([])
   const [IsLoading, setIsLoading] = useState(null)
 
+
   const fetchMovies = async () => {
 
     try {
