@@ -1,7 +1,7 @@
 import styles from './Home.module.css'
 import {useEffect, useState} from "react";
 import {FilmList} from "../../components";
-import {moviesService} from "../../services";
+import {genresService, moviesService} from "../../services";
 
 export function Home() {
 
@@ -11,9 +11,36 @@ export function Home() {
   const fetchMovies = async () => {
 
     try {
-      setIsLoading(true)
       const {results, page, total_pages, total_results} = await moviesService.getMovies()
-      setMovieList(results)
+      return results
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  const fetchGenres = async () => {
+
+    try {
+      const {genres} = await genresService.getGenres()
+      return genres
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  const fetchMoviesData = async () => {
+    const requests = [fetchMovies(), fetchGenres()]
+
+    try {
+      setIsLoading(true)
+
+      const [movies, genres] = await Promise.all(requests)
+
+      const margeWithGenresMovies = movies.map(movie => {
+        const {genre_ids} = movie
+        const movieGenresList = genre_ids.map(genreId => genres.find(el => el.id === genreId))
+        return {...movie, movieGenresList}
+      })
+
+      setMovieList(margeWithGenresMovies)
     } catch (e) {
       console.error(e)
     } finally {
@@ -26,7 +53,7 @@ export function Home() {
 
 
   useEffect(() => {
-    fetchMovies()
+    fetchMoviesData()
   }, [])
 
 

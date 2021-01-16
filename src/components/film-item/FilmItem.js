@@ -5,7 +5,7 @@ const imgBuilder = (posterPath, size = 200) => `https://image.tmdb.org/t/p/w${si
 
 export const FilmItem = (props) => {
 
-  const {original_title, release_date, vote_average, vote_count, poster_path} = props
+  const {original_title, release_date, vote_average, vote_count, poster_path, movieGenresList} = props
   let {overview} = props
 // adult: false
 // backdrop_path: "/srYya1ZlI97Au4jUYAktDe3avyA.jpg"
@@ -22,8 +22,8 @@ export const FilmItem = (props) => {
 // vote_average: 7.2
 // vote_count: 2685
 
-  if (overview.length>200) {
-     overview = `${overview.slice(0,200)} ...`
+  if (overview.length > 200) {
+    overview = `${overview.slice(0, 200)} ...`
   }
 
   return (
@@ -44,6 +44,11 @@ export const FilmItem = (props) => {
         </div>
         <div className={styles.textWrapper}>
           <h3>{original_title}</h3>
+
+          <h5>{movieGenresList.map(({name, id}, i) => (
+              <span key={id}>{name} {i < movieGenresList.length-1 && '-'} </span>
+          ))}</h5>
+
           <span><b>Rating:</b> {vote_average} (total votes: {vote_count})</span>
           <p className={styles.overview}>{overview}</p>
           <span><b>Release date:</b> {release_date}</span>
