@@ -1,23 +1,12 @@
-import {useEffect} from "react";
-import {moviesService} from "../../services";
+import {FilmItem} from "../film-item";
+import styles from './FilmList.module.css'
 
+export const FilmList = ({items}) => {
 
-export const FilmList = () => {
-
-
-  const fetchMovies = async () => {
-    const {results, page, total_pages, total_results} = await moviesService.getMovies()
-    console.log(results)
-  }
-
-
-  useEffect(() => {
-    fetchMovies().then()
-  }, [])
 
   return (
-      <div>
-
+      <div className={styles.wrapper}>
+        {items.map(item => (<div className={styles.itemWrapper} key={item.id}><FilmItem {...item}/></div>))}
       </div>
   );
 }
