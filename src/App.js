@@ -1,5 +1,5 @@
 import './App.css';
-import {Home} from "./pages";
+import {Home, MovieDetails} from "./pages";
 import {BaseLayout} from "./layouts";
 import {Route, Switch, useHistory} from "react-router-dom";
 
@@ -12,7 +12,7 @@ function App() {
             <Home/>
           </Route>
 
-           <Route path='/movie/:id' exact>
+          <Route path='/movie/:id' exact>
             <MovieDetails/>
           </Route>
 

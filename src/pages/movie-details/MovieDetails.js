@@ -1,9 +1,8 @@
+import React from 'react'
 import styles from './MovieDetails.module.css'
 
-export default function MovieDetails (){
+export const MovieDetails = () => {
     return (
-        <div>
-
-        </div>
+        <div> hello </div>
     );
 }

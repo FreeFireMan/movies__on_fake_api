@@ -2,9 +2,11 @@ import styles from './Home.module.css'
 import {useEffect, useState} from "react";
 import {FilmList} from "../../components";
 import {genresService, moviesService} from "../../services";
+import {useHistory} from "react-router-dom";
 
 export function Home() {
 
+  const history = useHistory()
   const [movieList, setMovieList] = useState([])
   const [IsLoading, setIsLoading] = useState(null)
 
@@ -57,10 +59,15 @@ export function Home() {
     fetchMoviesData()
   }, [])
 
+  const onFilmsClick = (film) => {
+    history.push(`/movie/${film.id}`)
+  }
 
   return (
       <div>
-        {IsLoading || IsLoading === null ? renderLoadingIndicator() : <FilmList items={movieList}/>}
+        {IsLoading || IsLoading === null
+            ? renderLoadingIndicator()
+            : <FilmList items={movieList} onFilmsClick={onFilmsClick}/>}
       </div>
   );
 }
