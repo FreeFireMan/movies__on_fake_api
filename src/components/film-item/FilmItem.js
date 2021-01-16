@@ -1,11 +1,12 @@
-import  styles from './FilmItem.module.css'
+import styles from './FilmItem.module.css'
 
 
 const imgBuilder = (posterPath, size = 200) => `https://image.tmdb.org/t/p/w${size}${posterPath}`
 
 export const FilmItem = (props) => {
 
-  const {original_title, overview, release_date, vote_average, vote_count, poster_path} = props
+  const {original_title, release_date, vote_average, vote_count, poster_path} = props
+  let {overview} = props
 // adult: false
 // backdrop_path: "/srYya1ZlI97Au4jUYAktDe3avyA.jpg"
 // genre_ids: Array(3) [ 14, 28, 12 ]
@@ -21,24 +22,31 @@ export const FilmItem = (props) => {
 // vote_average: 7.2
 // vote_count: 2685
 
+  if (overview.length>200) {
+     overview = `${overview.slice(0,200)} ...`
+  }
+
   return (
+
       <div className={styles.wrapper}>
         <div
-          style={{
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: '80%',
-            backgroundPosition: 'center',
-            height: 350,
-            width: '100%',
-            backgroundImage: `url(${imgBuilder(poster_path)})`
-          }}>
+            style={{
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: '100%',
+              backgroundPosition: 'center',
+              height: 300,
+              width: '100%',
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              backgroundImage: `url(${imgBuilder(poster_path)})`
+            }}>
           {/*<img src={imgBuilder(poster_path)} alt={`${poster_path} poster`}/>*/}
         </div>
-        <div>
-          <h2>{original_title}</h2>
-          <span>Rating: {vote_average} (total votes: {vote_count})</span>
-          <p>{overview}</p>
-          <span>Release date: {release_date}</span>
+        <div className={styles.textWrapper}>
+          <h3>{original_title}</h3>
+          <span><b>Rating:</b> {vote_average} (total votes: {vote_count})</span>
+          <p className={styles.overview}>{overview}</p>
+          <span><b>Release date:</b> {release_date}</span>
         </div>
       </div>
   );
