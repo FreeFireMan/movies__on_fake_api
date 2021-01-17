@@ -2,26 +2,39 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styles from './MovieDetails.module.css';
 import {moviesService, RenderLoadingIndicator} from "../../services";
+import {toast} from 'react-toastify';
 
 
 export const MovieDetails = () => {
 
   const {id} = useParams()
   const [filmDetails, setFilmDetails] = useState(null)
+  const [isLoading, setIsLoading] = useState(null)
 
   const imgBuilder = (posterPath, size = 300) => `https://image.tmdb.org/t/p/w${size}${posterPath}`
 
   const getMovieDetails = async () => {
-    const data = await moviesService.getMovieDetailsById(id)
-    setFilmDetails(data)
+    try {
+      setIsLoading(true)
+      const data = await moviesService.getMovieDetailsById(id)
+      setFilmDetails(data)
+      toast.success('Chosen film loaded')
+    } catch (e) {
+      console.error(e)
+      toast.error('Happened error')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
     getMovieDetails()
   }, [])
 
-  return filmDetails
-      ? (
+  if(isLoading || !filmDetails || isLoading === null) {
+    return <RenderLoadingIndicator/>
+  }
+  return (
           <div className={styles.wrapper}>
 
             <div className={styles.wrapperImg}>
@@ -59,7 +72,6 @@ export const MovieDetails = () => {
 
           </div>
       )
-      : <RenderLoadingIndicator/>
 }
 
 // genre_ids: Array(3) [ 14, 28, 12 ]
