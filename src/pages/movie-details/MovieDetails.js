@@ -3,13 +3,14 @@ import {useParams} from "react-router-dom";
 import styles from './MovieDetails.module.css';
 import {moviesService, RenderLoadingIndicator} from "../../services";
 
+
 export const MovieDetails = () => {
+
   const {id} = useParams()
   const [filmDetails, setFilmDetails] = useState(null)
 
   const imgBuilder = (posterPath, size = 300) => `https://image.tmdb.org/t/p/w${size}${posterPath}`
 
-  console.log(filmDetails)
   const getMovieDetails = async () => {
     const data = await moviesService.getMovieDetailsById(id)
     setFilmDetails(data)
