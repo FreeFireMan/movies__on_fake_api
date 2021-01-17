@@ -31,18 +31,20 @@ const handlerNextClick = () => {
 }
 
 
+
 export function Home() {
 
   const history = useHistory()
   const [movieList, setMovieList] = useState([])
+  const [genreList, setGenreList] = useState([])
   const [IsLoading, setIsLoading] = useState(null)
   const [movieData, setMovieData] = useState(null)
 
 
-  const fetchMovies = async () => {
+  const fetchMovies = async (params) => {
 
     try {
-      const {results, page, total_pages, total_results} = await moviesService.getMovies()
+      const {results, page, total_pages, total_results} = await moviesService.getMovies(params)
       setMovieData({page, total_pages, total_results})
       return results
     } catch (e) {
@@ -58,14 +60,14 @@ export function Home() {
       console.error(e)
     }
   }
-  const fetchMoviesData = async () => {
-    const requests = [fetchMovies(), fetchGenres()]
+  const fetchMoviesData = async (movieParams) => {
+    const requests = genreList.length ? [fetchMovies(movieParams)] : [fetchMovies(movieParams), fetchGenres()]
 
     try {
       setIsLoading(true)
 
-      const [movies, genres] = await Promise.all(requests)
-
+      const [movies, genres = genreList] = await Promise.all(requests)
+      !genreList && setGenreList(genres)
       const margeWithGenresMovies = movies.map(movie => {
         const {genre_ids} = movie
         const movieGenresList = genre_ids.map(genreId => genres.find(el => el.id === genreId))
@@ -86,7 +88,14 @@ export function Home() {
   const onFilmsClick = (film) => {
     history.push(`/movie/${film.id}`)
   }
-  console.log(movieData)
+
+  const onPrevClick = (page) => {
+    fetchMoviesData(page)
+  }
+  const onNextClick = (page) => {
+    fetchMoviesData(page)
+  }
+
   return (
       <div>
         {IsLoading || IsLoading === null
@@ -94,8 +103,8 @@ export function Home() {
             : <PaginationWrapper
                 currentPage={movieData.page}
                 totalPage={movieData.total_pages}
-                onPrevClick={() => console.log('next')}
-                onNextClick={() => console.log('prev')}
+                onPrevClick={onPrevClick}
+                onNextClick={onNextClick}
               >
                 <FilmList items={movieList} onFilmsClick={onFilmsClick}/>
               </PaginationWrapper>
