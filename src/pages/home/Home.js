@@ -1,7 +1,7 @@
 import styles from './Home.module.css'
 import {useEffect, useState} from "react";
 import {FilmList} from "../../components";
-import {genresService, moviesService} from "../../services";
+import {genresService, moviesService, RenderLoadingIndicator} from "../../services";
 import {useHistory} from "react-router-dom";
 
 export function Home() {
@@ -51,8 +51,7 @@ export function Home() {
     }
   }
 
-  const renderLoadingIndicator = () =>
-      (<div className={styles.loading}>Loading...</div>)
+
 
 
   useEffect(() => {
@@ -66,7 +65,7 @@ export function Home() {
   return (
       <div>
         {IsLoading || IsLoading === null
-            ? renderLoadingIndicator()
+            ? <RenderLoadingIndicator/>
             : <FilmList items={movieList} onFilmsClick={onFilmsClick}/>}
       </div>
   );

@@ -3,12 +3,13 @@
     border-radius: 10px;
     min-width: 205px;
     background-color: #d7d7d7;
-
 }
+
 .wrapper:hover {
     background-color: darkgray;
     cursor: pointer;
 }
+
 .textWrapper {
     margin: 8px;
 }
