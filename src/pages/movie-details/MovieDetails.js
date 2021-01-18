@@ -29,7 +29,7 @@ export const MovieDetails = () => {
 
   useEffect(() => {
     getMovieDetails()
-  }, [])
+  }, [id])
 
   if(isLoading || !filmDetails || isLoading === null) {
     return <RenderLoadingIndicator/>

@@ -1,3 +1,5 @@
-export * from './action-creators';
-export * from './action-types';
-export * from './reducers'
+import {createStore} from "redux";
+import {reducer} from "./reducers";
+
+
+export const store = createStore(reducer)
