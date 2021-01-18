@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import {FilmList, PaginationWrapper} from "../../components";
 import {genresService, moviesService, RenderLoadingIndicator} from "../../services";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setMoviesData} from "../../redux/action-creators";
 
 const margeMoviesWithGenre = (movies, genres) => {
   return movies.map(movie => {
@@ -14,10 +16,12 @@ const margeMoviesWithGenre = (movies, genres) => {
 
 export function Home() {
 
+  const dispatch = useDispatch()
   const history = useHistory()
   const [genresList, setGenreList] = useState([])
   const [IsLoading, setIsLoading] = useState(null)
-  const [moviesData, setMoviesData] = useState(null)
+  const moviesData = useSelector(({movies: {moviesData}}) => moviesData)
+  // const [moviesData, setMoviesData] = useState(null)
 
   const fetchMovies = (params) => {
     try {
@@ -39,7 +43,7 @@ export function Home() {
     try {
       setIsLoading(true)
       const [{results, ...rest}, genres] = await Promise.all(requests)
-      setMoviesData({movies: margeMoviesWithGenre(results, genres), ...rest})
+      dispatch(setMoviesData({movies: margeMoviesWithGenre(results, genres), ...rest}))
       setGenreList(genres)
     } catch (e) {
       console.error(e)

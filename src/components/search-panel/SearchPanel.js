@@ -1,14 +1,19 @@
 import styles from "./SearchPanel.module.css";
 import {useEffect, useState} from "react";
 import {moviesService, RenderLoadingIndicator} from "../../services";
+import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
+import {choseMovieFromDropdown, setIsVisible} from "../../redux/action-creators";
+import {toast} from "react-toastify";
 
 export const SearchPanel = () => {
 
   const history = useHistory()
+  const {isVisible} = useSelector(({movies: {isVisible}}) => ({isVisible}))
   const [searchValue, setSearchValue] = useState('')
   const [searchInfo, setSearchInfo] = useState(null)
-  const [isVisible, setIsVisible] = useState(null)
+  // const [isVisible, setIsVisible] = useState(null)
+  const dispatch = useDispatch()
 
   const getMovies = () => {
     moviesService.getMoviesBySearchValue({query: searchValue})
@@ -16,38 +21,44 @@ export const SearchPanel = () => {
   }
 
   useEffect(() => {
+    dispatch(setIsVisible(false))
     if (searchValue) {
-      setIsVisible(true)
+      dispatch(setIsVisible(true))
       getMovies()
-    } else {
-      setIsVisible(false)
-
     }
   }, [searchValue])
 
   const typeSearchValue = (value) => {
     setSearchValue(value)
-    setSearchInfo(null)
+    setSearchInfo('')
   }
 
-  console.log(searchInfo)
+  const choseMovieInPanel = async (id) => {
+      dispatch(setIsVisible(false))
+
+      history.push(`/movie/${id}`)
+      setSearchInfo('fgfg')
+    }
+
+
+
 
   return (
       <div className={styles.searchPanelWrapper}>
         <div>
           <input onInput={(e) => typeSearchValue(e.currentTarget.value)}
-                 className={styles.searchInput}
+                 className={styles.searchInput} value={searchValue}
           />
           {isVisible && <div className={styles.dropDownPanel}>
             {searchInfo
                 ? searchInfo.results.length > 0
-                    ? searchInfo.results.map((item, i) =>
-                        console.log(item)
-                        // <p className={i === 0 || i === searchInfo.results.length - 1 ? styles.searchIFL : styles.searchItem}
-                        //    onClick={() => history.push(item)} key={i}>
-                        //   {item.name}
-                        // </p>
-              )
+                    ? searchInfo.results.map(({name, id}, i) =>
+                        <p key={id} onClick={() => choseMovieInPanel(id)}
+                           className={i === 0 || i === searchInfo.results.length - 1 ? styles.searchIFL : styles.searchItem}
+                           >
+                          {name}
+                        </p>
+                    )
                     : <h3 className={styles.notFound}>Sorry... Film not found 🥺</h3>
                 : <RenderLoadingIndicator/>
             }

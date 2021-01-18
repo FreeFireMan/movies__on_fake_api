@@ -17,7 +17,7 @@
 
 .dropDownPanel {
     width: 400px;
-    min-height: 50px;
+    min-height: 40px;
     background-color: white;
     border-radius: 10px;
     border: 1px solid grey;
@@ -45,6 +45,8 @@
     text-align: center;
     margin: 10px;
 }
+
+
 
 .searchBtn {
     font-size: 15px;
