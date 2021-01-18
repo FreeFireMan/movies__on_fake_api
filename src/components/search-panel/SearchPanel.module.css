@@ -1,0 +1,63 @@
+.searchPanelWrapper {
+    display: flex;
+}
+
+
+.searchInput {
+    width: 400px;
+    font-size: 15px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid grey;
+}
+.searchInput:active {
+    border: 1px solid black;
+}
+
+
+.dropDownPanel {
+    width: 400px;
+    min-height: 50px;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid grey;
+    position: absolute;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    padding: 0;
+    z-index: 1;
+}
+.searchItem {
+    padding: 1px 10px;
+}
+.searchItem:hover {
+    background-color: #d7d7d7;
+    cursor: pointer;
+}
+.searchIFL {
+    padding: 1px 10px;
+    border-radius: 10px;
+}
+.searchIFL:hover {
+    background-color: #d7d7d7;
+    cursor: pointer;
+}
+.notFound {
+    text-align: center;
+    margin: 10px;
+}
+
+.searchBtn {
+    font-size: 15px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid grey;
+}
+.searchBtn:hover {
+    background-color: limegreen;
+    color: white;
+    cursor: pointer;
+}
+.searchBtn:active {
+    border: 1px solid black;
+    background-color: forestgreen;
+}

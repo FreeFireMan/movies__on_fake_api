@@ -1,15 +1,22 @@
+
 .mainWrapper {
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
+.headerWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
 main {
     flex: 1;
     padding: 20px;
     position: relative;
 }
-
 header, footer {
     padding: 20px;
     background-color: darkgray;

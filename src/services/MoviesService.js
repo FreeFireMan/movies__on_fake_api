@@ -9,6 +9,11 @@ class MoviesService {
     return data
   }
 
+  async getMoviesBySearchValue(params) {
+    const {data} = await AXIOS.get('/search/company', {params})
+    return data
+  }
+
   async getMovieDetailsById(movieId) {
     const {data} = await AXIOS.get(`/movie/${movieId}`)
     return data
