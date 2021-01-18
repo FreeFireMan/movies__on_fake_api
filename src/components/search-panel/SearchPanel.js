@@ -3,8 +3,7 @@ import {useEffect, useState} from "react";
 import {moviesService, RenderLoadingIndicator} from "../../services";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
-import {choseMovieFromDropdown, setIsVisible} from "../../redux/action-creators";
-import {toast} from "react-toastify";
+import {setIsVisible} from "../../redux/action-creators";
 
 export const SearchPanel = () => {
 
@@ -34,13 +33,11 @@ export const SearchPanel = () => {
   }
 
   const choseMovieInPanel = async (id) => {
-      dispatch(setIsVisible(false))
+    dispatch(setIsVisible(false))
 
-      history.push(`/movie/${id}`)
-      setSearchInfo('fgfg')
-    }
-
-
+    history.push(`/movie/${id}`)
+    setSearchInfo('fgfg')
+  }
 
 
   return (
@@ -55,7 +52,7 @@ export const SearchPanel = () => {
                     ? searchInfo.results.map(({name, id}, i) =>
                         <p key={id} onClick={() => choseMovieInPanel(id)}
                            className={i === 0 || i === searchInfo.results.length - 1 ? styles.searchIFL : styles.searchItem}
-                           >
+                        >
                           {name}
                         </p>
                     )
