@@ -1,4 +1,4 @@
-import styles from './Home.module.css'
+// import styles from './Home.module.css'
 import {useEffect, useState} from "react";
 import {FilmList} from "../../components";
 import {genresService, moviesService, RenderLoadingIndicator} from "../../services";
@@ -7,17 +7,17 @@ import {useHistory} from "react-router-dom";
 
 export const PaginationWrapper = ({children, currentPage, totalPage, onPrevClick, onNextClick}) => {
 
- const handlerPrevClick = () => {
-   if (currentPage+1 >= 0) {
-     onPrevClick && onPrevClick(currentPage-1)
-   }
- }
+  const handlerPrevClick = () => {
+    if (currentPage - 1 > 0) {
+      onPrevClick(currentPage -1)
+    }
+  }
+  const handlerNextClick = () => {
+    if (currentPage + 1 <= totalPage) {
+      onNextClick(currentPage +1)
+    }
+  }
 
-const handlerNextClick = () => {
-   if (currentPage+1 <= totalPage) {
-     onNextClick && onNextClick(currentPage+1)
-   }
-}
   return (
       <div>
         <div>
@@ -29,7 +29,6 @@ const handlerNextClick = () => {
       </div>
   );
 }
-
 
 
 export function Home() {
@@ -89,11 +88,8 @@ export function Home() {
     history.push(`/movie/${film.id}`)
   }
 
-  const onPrevClick = (page) => {
-    fetchMoviesData(page)
-  }
-  const onNextClick = (page) => {
-    fetchMoviesData(page)
+  const handlePageChange = (page) => {
+    fetchMoviesData({page})
   }
 
   return (
@@ -103,11 +99,11 @@ export function Home() {
             : <PaginationWrapper
                 currentPage={movieData.page}
                 totalPage={movieData.total_pages}
-                onPrevClick={onPrevClick}
-                onNextClick={onNextClick}
-              >
-                <FilmList items={movieList} onFilmsClick={onFilmsClick}/>
-              </PaginationWrapper>
+                onPrevClick={handlePageChange}
+                onNextClick={handlePageChange}
+            >
+              <FilmList items={movieList} onFilmsClick={onFilmsClick}/>
+            </PaginationWrapper>
         }
       </div>
   );
