@@ -4,27 +4,29 @@ import {FilmList, PaginationWrapper} from "../../components";
 import {genresService, moviesService, RenderLoadingIndicator} from "../../services";
 import {useHistory} from "react-router-dom";
 
+const margeMoviesWithGenre = (movies, genres) => {
+  return movies.map(movie => {
+    const {genre_ids} = movie
+    const movieGenresList = genre_ids.map(genreId => genres.find(el => el.id === genreId))
+    return {...movie, movieGenresList}
+  })
+}
+
 export function Home() {
 
   const history = useHistory()
-  const [movieList, setMovieList] = useState([])
-  const [genreList, setGenreList] = useState([])
+  const [genresList, setGenreList] = useState([])
   const [IsLoading, setIsLoading] = useState(null)
-  const [movieData, setMovieData] = useState(null)
+  const [moviesData, setMoviesData] = useState(null)
 
-
-  const fetchMovies = async (params) => {
-
+  const fetchMovies = (params) => {
     try {
-      const {results, page, total_pages, total_results} = await moviesService.getMovies(params)
-      setMovieData({page, total_pages, total_results})
-      return results
+      return moviesService.getMovies(params)
     } catch (e) {
       console.error(e)
     }
   }
   const fetchGenres = async () => {
-
     try {
       const {genres} = await genresService.getGenres()
       return genres
@@ -32,21 +34,13 @@ export function Home() {
       console.error(e)
     }
   }
-  const fetchMoviesData = async (movieParams) => {
-    const requests = genreList.length ? [fetchMovies(movieParams)] : [fetchMovies(movieParams), fetchGenres()]
-
+  const fetchMoviesData = async () => {
+    const requests = [fetchMovies(), fetchGenres()]
     try {
       setIsLoading(true)
-
-      const [movies, genres = genreList] = await Promise.all(requests)
-      !genreList && setGenreList(genres)
-      const margeWithGenresMovies = movies.map(movie => {
-        const {genre_ids} = movie
-        const movieGenresList = genre_ids.map(genreId => genres.find(el => el.id === genreId))
-        return {...movie, movieGenresList}
-      })
-
-      setMovieList(margeWithGenresMovies)
+      const [{results, ...rest}, genres] = await Promise.all(requests)
+      setMoviesData({movies: margeMoviesWithGenre(results, genres), ...rest})
+      setGenreList(genres)
     } catch (e) {
       console.error(e)
     } finally {
@@ -58,7 +52,13 @@ export function Home() {
     fetchMoviesData()
   }, [])
   const onFilmsClick = (film) => history.push(`/movie/${film.id}`)
-  const handlePageChange = (page) => fetchMoviesData({page})
+  const handlePageChange = async (page) => {
+    const {results, ...rest} = await fetchMovies({page})
+    setMoviesData({
+      movies: margeMoviesWithGenre(results, genresList),
+      ...rest
+    })
+  }
 
 
   return (
@@ -66,14 +66,14 @@ export function Home() {
         {IsLoading || IsLoading === null
             ? <RenderLoadingIndicator/>
             : <PaginationWrapper
-                currentPage={movieData.page}
-                totalPage={movieData.total_pages}
+                currentPage={moviesData.page}
+                totalPage={moviesData.total_pages}
                 onPrevClick={handlePageChange}
                 onNextClick={handlePageChange}
                 handlerLastPage={handlePageChange}
                 handlerFirstPage={handlePageChange}
             >
-              <FilmList items={movieList} onFilmsClick={onFilmsClick}/>
+              <FilmList items={moviesData.movies} onFilmsClick={onFilmsClick}/>
             </PaginationWrapper>
         }
       </div>
