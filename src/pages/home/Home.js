@@ -4,7 +4,6 @@ import {FilmList, PaginationWrapper} from "../../components";
 import {genresService, moviesService, RenderLoadingIndicator} from "../../services";
 import {useHistory} from "react-router-dom";
 
-
 export function Home() {
 
   const history = useHistory()
@@ -80,3 +79,4 @@ export function Home() {
       </div>
   );
 }
+
